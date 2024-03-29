@@ -12,7 +12,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { BillingFrequency } from "@/constants";
-import { cn, removeFirstAndLastLetter, validateTerm } from "@/lib/utils";
+import {
+  cn,
+  getDateFromObject,
+  removeFirstAndLastLetter,
+  validateTerm,
+} from "@/lib/utils";
 import axios from "axios";
 import { z } from "zod";
 import { useEffect, useState } from "react";
@@ -43,6 +48,7 @@ const EditPage = ({
     billing_start_date: "",
   });
   const [isValid, setIsValid] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const getListItems = async () => {
     try {
@@ -52,7 +58,7 @@ const EditPage = ({
       const response = data!.filter((item) => item.id == lineItemId)[0]
         .properties;
 
-      if (!response) {
+      if (!response.data) {
         throw new Error("List Item not found");
       }
       setInputData({
@@ -78,6 +84,7 @@ const EditPage = ({
 
   const onSubmit = async () => {
     try {
+      setLoading(true);
       const response = await axios.patch(
         `/api/crm-card/edit?portalId=${portalId}&lineItemId=${lineItemId}`,
         {
@@ -90,18 +97,21 @@ const EditPage = ({
       }
       toast.success("Line Item updated successfully");
       window.location.reload();
+      setLoading(false);
     } catch (error: any) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto space-y-5 p-10">
-      <div className="flex items-center justify-start gap-5">
+      <div className="grid grid-cols-4 gap-5">
         <Input
           type="date"
           placeholder="Billing Start Date"
-          value={inputData.billing_start_date}
+          value={getDateFromObject(new Date(inputData.billing_start_date!))}
           onChange={(e) =>
             setInputData({ ...inputData, billing_start_date: e.target.value })
           }
@@ -152,7 +162,7 @@ const EditPage = ({
           <SelectTrigger>
             <SelectValue placeholder="Biling Frequency" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="h-44">
             {BillingFrequency.map((frequency) => (
               <SelectItem value={frequency.value} key={frequency.value}>
                 {frequency.label}
@@ -172,7 +182,9 @@ const EditPage = ({
           value={inputData.hs_discount_percentage}
         />
       </div>
-      <Button onClick={onSubmit}>Submit</Button>
+      <Button onClick={onSubmit} disabled={loading}>
+        Submit
+      </Button>
     </div>
   );
 };

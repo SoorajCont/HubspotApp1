@@ -78,7 +78,7 @@ const DashboardPage = async ({
 
                 <Button asChild variant={"outline"}>
                   <Link
-                    href={`/dashboard/createLineItem?portalId=${portalId}&dealId=${dealId}&collection=${collection.name}`}
+                    href={`/dashboard/createLineItem?portalId=${portalId}&dealId=${dealId}&collection=${collection.name}&userId=${userId}`}
                   >
                     Create Line Item
                   </Link>

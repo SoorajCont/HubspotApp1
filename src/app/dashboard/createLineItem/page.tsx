@@ -16,22 +16,25 @@ import { cn, decodeSlug, getId, validateTerm } from "@/lib/utils";
 import { createLineItemSchema } from "@/lib/validation";
 import { CollectionDataType } from "@/types";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import z from "zod";
 
 const CreateLineItem = ({
-  searchParams: { collection, portalId, dealId },
+  searchParams: { collection, portalId, dealId, userId },
 }: {
   searchParams: {
     portalId: string;
     dealId: string;
     collection: string;
+    userId: string;
   };
 }) => {
   const [productDataTable, setProductDataTable] = useState<
     CollectionDataType[]
   >([]);
+  const router = useRouter();
 
   const [inputData, setInputData] = useState<
     z.infer<typeof createLineItemSchema>
@@ -41,10 +44,11 @@ const CreateLineItem = ({
     recurringbillingfrequency: "",
     hs_recurring_billing_period: "",
     billing_start_date: "",
+    hs_discount_percentage: "",
   });
 
   const [isValid, setIsValid] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   const [filteredData, setFilteredData] = useState<CollectionDataType[]>([]);
 
   const getProductDataTable = async () => {
@@ -78,6 +82,7 @@ const CreateLineItem = ({
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `/api/crm-card/createLineItem?portalId=${portalId}&dealId=${dealId}`,
         {
@@ -90,8 +95,12 @@ const CreateLineItem = ({
         throw new Error("Line Item not Created");
       }
       toast.success("Line Item created successfully");
+      setLoading(false);
+      router.push(`/dashboard?portalId=${portalId}&userId=${userId}`);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -156,8 +165,21 @@ const CreateLineItem = ({
             ))}
           </SelectContent>
         </Select>
+        <Input
+          type="text"
+          placeholder="Discount"
+          onChange={(e) =>
+            setInputData({
+              ...inputData,
+              hs_discount_percentage: e.target.value,
+            })
+          }
+          value={inputData.hs_discount_percentage}
+        />
       </div>
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button onClick={handleSubmit} disabled={loading}>
+        Submit
+      </Button>
     </div>
   );
 };

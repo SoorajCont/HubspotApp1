@@ -42,6 +42,8 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
     })
   );
 
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const addNewRow = () => {
@@ -89,33 +91,41 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
   };
 
   const handleSubmit = async () => {
-    const isEmpty = collectionsData.some((item) => {
-      return (
-        item.billing_start_date === "" ||
-        item.billing_frequency === "" ||
-        item.discount === "" ||
-        item.quantity === "" ||
-        item.term === ""
+    try {
+      setLoading(true);
+      const isEmpty = collectionsData.some((item) => {
+        return (
+          item.billing_start_date === "" ||
+          item.billing_frequency === "" ||
+          item.discount === "" ||
+          item.quantity === "" ||
+          item.term === ""
+        );
+      });
+
+      if (isEmpty) {
+        toast.error("All fields are required");
+        return;
+      }
+
+      const response = await insertCollectionData(
+        `Account_${portalId}`,
+        collection,
+        collectionsData
       );
-    });
 
-    if (isEmpty) {
-      toast.error("All fields are required");
-      return;
+      if (!response) {
+        toast.error("Something went wrong");
+        return;
+      }
+      toast.success("Data submitted successfully");
+      router.push(`/dashboard?portalId=${portalId}&userId=${userId}`);
+      setLoading(false);
+    } catch (error: any) {
+      console.error({ error: error.message });
+    } finally {
+      setLoading(false);
     }
-
-    const response = await insertCollectionData(
-      `Account_${portalId}`,
-      collection,
-      collectionsData
-    );
-
-    if (!response) {
-      toast.error("Something went wrong");
-      return;
-    }
-    toast.success("Data submitted successfully");
-    router.push(`/dashboard?portalId=${portalId}&userId=${userId}`);
   };
 
   useEffect(() => {
@@ -221,7 +231,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
         </TableBody>
       </Table>
 
-      <Button className="w-fit ml-4" onClick={handleSubmit}>
+      <Button className="w-fit ml-4" onClick={handleSubmit} disabled={loading}>
         Submit
       </Button>
     </div>

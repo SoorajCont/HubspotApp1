@@ -17,7 +17,6 @@ const ReadOnlyTable = ({ data }: { data: CollectionDataType[] }) => {
       <Table className="max-w-7xl mx-auto mt-10  ">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Billing Start Date</TableHead>
             <TableHead className="w-[100px]">Term(Months)</TableHead>
             <TableHead className="w-[100px]">Billing Frequency</TableHead>
             <TableHead className="w-[100px]">Quantity</TableHead>
@@ -27,9 +26,6 @@ const ReadOnlyTable = ({ data }: { data: CollectionDataType[] }) => {
         <TableBody>
           {data.map((data, index) => (
             <TableRow key={index}>
-              <TableCell>
-                {getDateFromObject(new Date(data.billing_start_date))}
-              </TableCell>
               <TableCell>{data.term}</TableCell>
               <TableCell>{data.billing_frequency}</TableCell>
               <TableCell>{data.quantity}</TableCell>

@@ -6,6 +6,7 @@ export const createLineItemSchema = z.object({
   recurringbillingfrequency: z.string(),
   hs_recurring_billing_period: z.string(),
   billing_start_date: z.string(),
+  hs_discount_percentage: z.string(),
 });
 
 export const editLineItemSchema = z.object({
