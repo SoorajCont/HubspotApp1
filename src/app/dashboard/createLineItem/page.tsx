@@ -2,6 +2,7 @@
 
 import { getCollectionData } from "@/actions/collections";
 import ReadOnlyTable from "@/components/ReadOnlyTable";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -14,11 +15,13 @@ import { BillingFrequency } from "@/constants";
 import { cn, decodeSlug, getId, validateTerm } from "@/lib/utils";
 import { createLineItemSchema } from "@/lib/validation";
 import { CollectionDataType } from "@/types";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import z from "zod";
 
 const CreateLineItem = ({
-  searchParams: { collection, portalId },
+  searchParams: { collection, portalId, dealId },
 }: {
   searchParams: {
     portalId: string;
@@ -73,11 +76,30 @@ const CreateLineItem = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputData, setInputData]);
 
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        `/api/crm-card/createLineItem?portalId=${portalId}&dealId=${dealId}`,
+        {
+          ...inputData,
+          hs_recurring_billing_period: `P${inputData.hs_recurring_billing_period}M`,
+        }
+      );
+
+      if (!response.data) {
+        throw new Error("Line Item not Created");
+      }
+      toast.success("Line Item created successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className=" max-w-7xl m-auto">
+    <div className=" max-w-7xl m-auto space-y-5">
       <ReadOnlyTable data={filteredData} />
 
-      <div className="flex gap-5 w-fit">
+      <div className="flex gap-5 w-full">
         <Input
           type="date"
           value={inputData.billing_start_date}
@@ -88,9 +110,9 @@ const CreateLineItem = ({
         <Input
           type="text"
           placeholder="Quantity"
-          onChange={(e) => {
-            setInputData({ ...inputData, quantity: e.target.value });
-          }}
+          onChange={(e) =>
+            setInputData({ ...inputData, quantity: e.target.value })
+          }
           value={inputData.quantity}
         />
         <Input
@@ -123,10 +145,10 @@ const CreateLineItem = ({
             setInputData(newData);
           }}
         >
-          <SelectTrigger>
+          <SelectTrigger className="">
             <SelectValue placeholder="Biling Frequency" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="h-44">
             {BillingFrequency.map((frequency) => (
               <SelectItem value={frequency.value} key={frequency.value}>
                 {frequency.label}
@@ -135,6 +157,7 @@ const CreateLineItem = ({
           </SelectContent>
         </Select>
       </div>
+      <Button onClick={handleSubmit}>Submit</Button>
     </div>
   );
 };

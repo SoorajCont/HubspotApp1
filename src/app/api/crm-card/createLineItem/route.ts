@@ -12,25 +12,11 @@ export const POST = async (req: NextRequest) => {
     const validatedSchema = createLineItemSchema.safeParse(body);
 
     if (!validatedSchema.success) {
-      return Response.json({ message: "" });
+      return Response.json({ message: "All Fields are required" });
     }
 
-    const {
-      hs_product_id,
-      hs_recurring_billing_period,
-      quantity,
-      recurringbillingfrequency,
-      billing_start_date,
-    } = validatedSchema.data;
-
     const newBody = {
-      properties: {
-        quantity,
-        hs_product_id,
-        recurringbillingfrequency,
-        hs_recurring_billing_period: `P${hs_recurring_billing_period}M`,
-        billing_start_date,
-      },
+      properties: validatedSchema.data,
     };
 
     const accessToken = await getAccessTokenWithPortalId(Number(portalId));

@@ -20,7 +20,7 @@ import { cn, validateTerm } from "@/lib/utils";
 import { CollectionDataType } from "@/types";
 import { Delete, Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -80,7 +80,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
       const isNewValid = [...isValid];
       isNewValid[index] = result;
       setIsValid(isNewValid);
-      newCollectionsData[index].term = newTerm.toString();
+      newCollectionsData[index].term = event.target.value;
     } else {
       newCollectionsData[index][field] = event.target.value.toString();
     }
@@ -118,12 +118,13 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
     router.push(`/dashboard?portalId=${portalId}&userId=${userId}`);
   };
 
-  // useEffect(() => {
-  //   if (collectionsData.length === 0) {
-  //     alert("At least one row required");
-  //     return;
-  //   }
-  // }, [handleDeleteRow, collectionsData.length]);
+  useEffect(() => {
+    if (collectionsData.length === 0) {
+      addNewRow();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="w-full min-h-screen grid place-content-center gap-5">
@@ -157,9 +158,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
                   value={collection.term}
                   onChange={(e) => handleChange(e, index, "term")}
                   className={cn(
-                    isValid.length > 0 && isValid[index]
-                      ? "border-input"
-                      : "border-red-500"
+                    isValid[index] ? "border-input" : "border-red-500"
                   )}
                 />
               </TableCell>
@@ -183,7 +182,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Biling Frequency" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="h-44">
                     {BillingFrequency.map((frequency) => (
                       <SelectItem value={frequency.value} key={frequency.value}>
                         {frequency.label}

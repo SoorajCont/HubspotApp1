@@ -91,7 +91,7 @@ const EditPage = ({
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-5 p-10">
+    <div className="max-w-7xl mx-auto space-y-5 p-10">
       <div className="flex items-center justify-start gap-5">
         <Input
           type="date"
