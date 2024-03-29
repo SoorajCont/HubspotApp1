@@ -43,7 +43,7 @@ const CreateLineItem = ({
     hs_product_id: getId(decodeSlug(collection)),
     recurringbillingfrequency: "",
     hs_recurring_billing_period: "",
-    billing_start_date: "",
+    hs_recurring_billing_start_date: "",
     hs_discount_percentage: "",
   });
 
@@ -111,9 +111,12 @@ const CreateLineItem = ({
       <div className="flex gap-5 w-full">
         <Input
           type="date"
-          value={inputData.billing_start_date}
+          value={inputData.hs_recurring_billing_start_date}
           onChange={(e) =>
-            setInputData({ ...inputData, billing_start_date: e.target.value })
+            setInputData({
+              ...inputData,
+              hs_recurring_billing_start_date: e.target.value,
+            })
           }
         />
         <Input

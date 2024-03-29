@@ -35,7 +35,7 @@ export async function getLineItemRecords(list: string[], accessToken: string) {
         data: LineItemsObject;
       } = await axios({
         method: "get",
-        url: `https://api.hubapi.com/crm/v3/objects/line_items/${itemId}?properties=Name,amount,quantity,hs_discount_percentage,price,hs_product_id,hs_recurring_billing_period`,
+        url: `https://api.hubapi.com/crm/v3/objects/line_items/${itemId}?properties=Name,amount,quantity,hs_discount_percentage,price,hs_product_id,hs_recurring_billing_period,hs_recurring_billing_start_date,recurringbillingfrequency`,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

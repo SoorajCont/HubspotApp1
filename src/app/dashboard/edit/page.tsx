@@ -45,7 +45,7 @@ const EditPage = ({
     recurringbillingfrequency: "",
     hs_recurring_billing_period: "",
     hs_discount_percentage: "",
-    billing_start_date: "",
+    hs_recurring_billing_start_date: "",
   });
   const [isValid, setIsValid] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -55,10 +55,12 @@ const EditPage = ({
       const accessToken = await getAccessTokenWithPortalId(Number(portalId));
       const list = await getLineItemList(accessToken!, Number(dealId));
       const data = await getLineItemRecords(list!, accessToken!);
+      console.log(data);
       const response = data!.filter((item) => item.id == lineItemId)[0]
         .properties;
+      // console.log(response);
 
-      if (!response.data) {
+      if (!response) {
         throw new Error("List Item not found");
       }
       setInputData({
@@ -69,7 +71,8 @@ const EditPage = ({
           response.hs_recurring_billing_period
         ),
         hs_discount_percentage: response.hs_discount_percentage,
-        billing_start_date: response.billing_start_date,
+        hs_recurring_billing_start_date:
+          response.hs_recurring_billing_start_date,
         recurringbillingfrequency: response.recurringbillingfrequency,
       });
     } catch (error) {
@@ -111,9 +114,12 @@ const EditPage = ({
         <Input
           type="date"
           placeholder="Billing Start Date"
-          value={getDateFromObject(new Date(inputData.billing_start_date!))}
+          value={inputData.hs_recurring_billing_start_date}
           onChange={(e) =>
-            setInputData({ ...inputData, billing_start_date: e.target.value })
+            setInputData({
+              ...inputData,
+              hs_recurring_billing_start_date: e.target.value,
+            })
           }
         />
         <Input
