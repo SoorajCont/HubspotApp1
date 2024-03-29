@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { BillingFrequency } from "@/constants";
-import { cn, validateTerm } from "@/lib/utils";
+import { cn, removeFirstAndLastLetter, validateTerm } from "@/lib/utils";
 import axios from "axios";
 import { z } from "zod";
 import { useEffect, useState } from "react";
@@ -59,8 +59,12 @@ const EditPage = ({
         ...inputData,
         name: response.name,
         quantity: response.quantity,
-        hs_recurring_billing_period: response.hs_recurring_billing_period,
+        hs_recurring_billing_period: removeFirstAndLastLetter(
+          response.hs_recurring_billing_period
+        ),
         hs_discount_percentage: response.hs_discount_percentage,
+        billing_start_date: response.billing_start_date,
+        recurringbillingfrequency: response.recurringbillingfrequency,
       });
     } catch (error) {
       console.log(error);
@@ -69,6 +73,7 @@ const EditPage = ({
 
   useEffect(() => {
     getListItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = async () => {
