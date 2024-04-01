@@ -45,6 +45,9 @@ export interface LineItemsProperties extends WithId<Document> {
   hs_recurring_billing_period: string;
   hs_discount_percentage: string;
   hs_recurring_billing_start_date: string;
+  hs_billing_start_delay_days: string;
+  hs_billing_start_delay_months: string;
+  hs_billing_start_delay_type: string;
 }
 
 export interface LineItemsObject {

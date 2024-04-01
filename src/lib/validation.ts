@@ -20,4 +20,7 @@ export const editLineItemSchema = z.object({
   hs_recurring_billing_start_date: z.string().optional(),
   name: z.string().optional(),
   hs_discount_percentage: z.string().optional(),
+  hs_billing_start_delay_days: z.string().optional(),
+  hs_billing_start_delay_months: z.string().optional(),
+  hs_billing_start_delay_type: z.string().optional(),
 });

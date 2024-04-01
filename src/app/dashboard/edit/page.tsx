@@ -2,6 +2,7 @@
 
 import { getAccessTokenWithPortalId } from "@/actions/authToken";
 import { getLineItemList, getLineItemRecords } from "@/actions/lineItems";
+import BillingStartDateEdit from "@/components/BillingStartDateEdit";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,17 +13,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { BillingFrequency } from "@/constants";
-import {
-  cn,
-  getDateFromObject,
-  removeFirstAndLastLetter,
-  validateTerm,
-} from "@/lib/utils";
-import axios from "axios";
-import { z } from "zod";
-import { useEffect, useState } from "react";
+import { cn, removeFirstAndLastLetter, validateTerm } from "@/lib/utils";
 import { editLineItemSchema } from "@/lib/validation";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { z } from "zod";
 
 const EditPage = ({
   searchParams,
@@ -46,6 +42,9 @@ const EditPage = ({
     hs_recurring_billing_period: "",
     hs_discount_percentage: "",
     hs_recurring_billing_start_date: "",
+    hs_billing_start_delay_days: "",
+    hs_billing_start_delay_months: "",
+    hs_billing_start_delay_type: "",
   });
   const [isValid, setIsValid] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -63,6 +62,7 @@ const EditPage = ({
       if (!response) {
         throw new Error("List Item not found");
       }
+
       setInputData({
         ...inputData,
         name: response.name,
@@ -74,6 +74,9 @@ const EditPage = ({
         hs_recurring_billing_start_date:
           response.hs_recurring_billing_start_date,
         recurringbillingfrequency: response.recurringbillingfrequency,
+        hs_billing_start_delay_days: response.hs_billing_start_delay_days,
+        hs_billing_start_delay_months: response.hs_billing_start_delay_months,
+        hs_billing_start_delay_type: response.hs_billing_start_delay_type,
       });
     } catch (error) {
       console.log(error);
@@ -111,16 +114,9 @@ const EditPage = ({
   return (
     <div className="max-w-7xl mx-auto space-y-5 p-10">
       <div className="grid grid-cols-4 gap-5">
-        <Input
-          type="date"
-          placeholder="Billing Start Date"
-          value={inputData.hs_recurring_billing_start_date}
-          onChange={(e) =>
-            setInputData({
-              ...inputData,
-              hs_recurring_billing_start_date: e.target.value,
-            })
-          }
+        <BillingStartDateEdit
+          inputData={inputData}
+          setInputData={setInputData}
         />
         <Input
           type="text"
