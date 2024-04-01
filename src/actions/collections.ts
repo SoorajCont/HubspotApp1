@@ -62,7 +62,8 @@ export async function getCollectionData(
     const data = documents?.map((document) => {
       return {
         // _id: document._id.toString(),
-        billing_start_date: document.billing_start_date,
+        hs_recurring_billing_start_date:
+          document.hs_recurring_billing_start_date,
         term: document.term,
         billing_frequency: document.billing_frequency,
         quantity: document.quantity,

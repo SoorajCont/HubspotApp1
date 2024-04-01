@@ -1,10 +1,6 @@
 "use server";
 
-import {
-  LineItemsObject,
-  LineItemsProperties,
-  LineItemsResponse,
-} from "@/types";
+import { LineItemsObject, LineItemsResponse } from "@/types";
 import z from "zod";
 import axios, { AxiosResponse } from "axios";
 import { createLineItemSchema, editLineItemSchema } from "@/lib/validation";

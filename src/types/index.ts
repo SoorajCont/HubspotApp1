@@ -22,7 +22,7 @@ export interface CollectionType {
 }
 
 export interface CollectionDataResponse extends WithId<Document> {
-  billing_start_date: string;
+  hs_recurring_billing_start_date: string;
   term: string;
   billing_frequency: string;
   quantity: string;
@@ -30,7 +30,7 @@ export interface CollectionDataResponse extends WithId<Document> {
 }
 
 export interface CollectionDataType {
-  billing_start_date: string;
+  hs_recurring_billing_start_date: string;
   term: string;
   billing_frequency: string;
   quantity: string;

@@ -48,7 +48,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
 
   const addNewRow = () => {
     const newRow = {
-      billing_start_date: "",
+      hs_recurring_billing_start_date: "",
       term: "",
       billing_frequency: "",
       quantity: "",
@@ -95,7 +95,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
       setLoading(true);
       const isEmpty = collectionsData.some((item) => {
         return (
-          item.billing_start_date === "" ||
+          item.hs_recurring_billing_start_date === "" ||
           item.billing_frequency === "" ||
           item.discount === "" ||
           item.quantity === "" ||
@@ -158,8 +158,10 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
               <TableCell>
                 <Input
                   type="date"
-                  value={collection.billing_start_date}
-                  onChange={(e) => handleChange(e, index, "billing_start_date")}
+                  value={collection.hs_recurring_billing_start_date}
+                  onChange={(e) =>
+                    handleChange(e, index, "hs_recurring_billing_start_date")
+                  }
                 />
               </TableCell>
               <TableCell>

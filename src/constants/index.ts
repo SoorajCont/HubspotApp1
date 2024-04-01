@@ -51,3 +51,21 @@ export const BillingFrequency: {
     label: "Every 5 Years",
   },
 ];
+
+export const BillingStartDate: {
+  value: string;
+  label: string;
+}[] = [
+  {
+    value: "at payment",
+    label: "At Payment",
+  },
+  {
+    value: "custom date",
+    label: "Custom Date",
+  },
+  {
+    value: "delayed start (months)",
+    label: "Delayed Start (Months)",
+  },
+];

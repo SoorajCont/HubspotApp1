@@ -47,6 +47,8 @@ export const GET = async (req: NextRequest) => {
       });
     }
 
+    console.log(record);
+
     const data = record.map((item, index) => {
       return {
         objectId: Number(item.id),
