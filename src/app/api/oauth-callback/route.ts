@@ -5,7 +5,7 @@ import {
   getAccountInfo,
   saveRefreshTokenToMongo,
 } from "@/actions/install";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const authorizationCode = req.nextUrl.searchParams.get("code");
@@ -31,13 +31,13 @@ export const GET = async (req: NextRequest) => {
       await saveRefreshTokenToMongo(refreshToken, portalId);
       await createDatabase(portalId);
 
-      return Response.redirect(
+      return NextResponse.redirect(
         `${process.env.DOMAIN}/success?portalId=${portalId}`
       );
     } catch (error: any) {
-      return Response.json({ error: error.message });
+      return NextResponse.json({ error: error.message });
     }
   }
 
-  return Response.json({ message: "No authorization code provided" });
+  return NextResponse.json({ message: "No authorization code provided" });
 };
