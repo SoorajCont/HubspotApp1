@@ -5,6 +5,7 @@ import BillingStartDateCreate from "@/components/BillingStartDateCreate";
 import ReadOnlyTable from "@/components/ReadOnlyTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -129,66 +130,81 @@ const CreateLineItem = ({
             })
           }
         /> */}
-        <Input
-          type="text"
-          placeholder="Quantity"
-          onChange={(e) =>
-            setInputData({ ...inputData, quantity: e.target.value })
-          }
-          value={inputData.quantity}
-        />
-        <Input
-          type="text"
-          placeholder="Term(Months)"
-          onChange={(e) => {
-            const newData = { ...inputData };
-            const result = validateTerm(
-              newData.recurringbillingfrequency,
-              parseInt(e.target.value)
-            );
-            setIsValid(result);
-            newData.hs_recurring_billing_period = e.target.value;
-            setInputData(newData);
-          }}
-          value={inputData.hs_recurring_billing_period}
-          className={cn(isValid ? "border-input" : "border-red-500")}
-        />
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="quantity">Quantity</Label>
+          <Input
+            type="text"
+            placeholder="Quantity"
+            id="quantity"
+            onChange={(e) =>
+              setInputData({ ...inputData, quantity: e.target.value })
+            }
+            value={inputData.quantity}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="term">Term(Months)</Label>
+          <Input
+            type="text"
+            placeholder="Term(Months)"
+            id="term"
+            onChange={(e) => {
+              const newData = { ...inputData };
+              const result = validateTerm(
+                newData.recurringbillingfrequency,
+                parseInt(e.target.value)
+              );
+              setIsValid(result);
+              newData.hs_recurring_billing_period = e.target.value;
+              setInputData(newData);
+            }}
+            value={inputData.hs_recurring_billing_period}
+            className={cn(isValid ? "border-input" : "border-red-500")}
+          />
+        </div>
 
-        <Select
-          value={inputData.recurringbillingfrequency}
-          onValueChange={(e) => {
-            const newData = { ...inputData };
-            const result = validateTerm(
-              e,
-              parseInt(newData.hs_recurring_billing_period)
-            );
-            setIsValid(result);
-            newData.recurringbillingfrequency = e;
-            setInputData(newData);
-          }}
-        >
-          <SelectTrigger className="">
-            <SelectValue placeholder="Biling Frequency" />
-          </SelectTrigger>
-          <SelectContent className="h-44">
-            {BillingFrequency.map((frequency) => (
-              <SelectItem value={frequency.value} key={frequency.value}>
-                {frequency.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Input
-          type="text"
-          placeholder="Discount"
-          onChange={(e) =>
-            setInputData({
-              ...inputData,
-              hs_discount_percentage: e.target.value,
-            })
-          }
-          value={inputData.hs_discount_percentage}
-        />
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="billingFrequency">Billing Frequency</Label>
+          <Select
+            value={inputData.recurringbillingfrequency}
+            onValueChange={(e) => {
+              const newData = { ...inputData };
+              const result = validateTerm(
+                e,
+                parseInt(newData.hs_recurring_billing_period)
+              );
+              setIsValid(result);
+              newData.recurringbillingfrequency = e;
+              setInputData(newData);
+            }}
+          >
+            <SelectTrigger id="billingFrequency" className="w-[200px]">
+              <SelectValue placeholder="Biling Frequency" />
+            </SelectTrigger>
+            <SelectContent className="h-44">
+              {BillingFrequency.map((frequency) => (
+                <SelectItem value={frequency.value} key={frequency.value}>
+                  {frequency.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="discount">Discount</Label>
+          <Input
+            type="text"
+            placeholder="Discount"
+            id="discount"
+            onChange={(e) =>
+              setInputData({
+                ...inputData,
+                hs_discount_percentage: e.target.value,
+              })
+            }
+            value={inputData.hs_discount_percentage}
+          />
+        </div>
       </div>
       <Button onClick={handleSubmit} disabled={loading}>
         Submit

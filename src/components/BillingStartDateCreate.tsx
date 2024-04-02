@@ -11,6 +11,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface Props {
   inputData: z.infer<typeof createLineItemSchema>;
@@ -74,156 +75,162 @@ const BillingStartDateCreate = ({ inputData, setInputData }: Props) => {
     setStartBillingTerm(e);
   };
   return (
-    <div className="relative">
-      <Button
-        className="relative w-[200px] z-10 py-0"
-        onClick={() => {
-          setIsSelectOpen(true);
-        }}
-        variant={"outline"}
-      >
-        {inputData.hs_billing_start_delay_days ? (
-          <p>{`${inputData.hs_billing_start_delay_days} days after payment`}</p>
-        ) : inputData.hs_billing_start_delay_months ? (
-          <p>{`${inputData.hs_billing_start_delay_months} months after payment`}</p>
-        ) : (
-          <p>{inputData.hs_recurring_billing_start_date}</p>
-        )}
-      </Button>
-      <Select
-        value={startBillingTerm}
-        onValueChange={(e) => {
-          handleChange(e);
-        }}
-        open={isSelectOpen}
-        onOpenChange={setIsSelectOpen}
-      >
-        <SelectTrigger className="absolute top-0 left-0 -z-2">
-          <SelectValue placeholder="Billing Start Date" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="custom date">
-            <Dialog
-              open={isModalOpen["custom date"]}
-              onOpenChange={(e) =>
-                setIsModalOpen({ ...isModalOpen, "custom date": e })
-              }
-            >
-              <DialogTrigger>Custom Date</DialogTrigger>
-              <DialogContent>
-                <Input
-                  type="date"
-                  value={inputData.hs_recurring_billing_start_date}
-                  onChange={(e) => {
-                    setInputData({
-                      ...inputData,
-                      hs_recurring_billing_start_date: e.target.value,
-                      hs_billing_start_delay_type: "",
-                      hs_billing_start_delay_days: "",
-                      hs_billing_start_delay_months: "",
-                    });
-                  }}
-                />
-                <Button
-                  onClick={() => {
-                    setIsModalOpen({
-                      ...isModalOpen,
-                      "custom date": false,
-                    });
-
-                    // setStartBillingTerm("");
-                  }}
-                >
-                  Submit
-                </Button>
-              </DialogContent>
-            </Dialog>
-          </SelectItem>
-          <SelectItem value="delayed start (months)">
-            <Dialog
-              open={isModalOpen["delayed start (months)"]}
-              onOpenChange={(e) =>
-                setIsModalOpen({
-                  ...isModalOpen,
-                  "delayed start (months)": e,
-                })
-              }
-            >
-              <DialogTrigger>Delayed Start (months)</DialogTrigger>
-              <DialogContent>
-                <Input
-                  type="text"
-                  placeholder="Enter number of months"
-                  value={inputData.hs_billing_start_delay_months}
-                  onChange={(e) => {
-                    setInputData({
-                      ...inputData,
-                      hs_billing_start_delay_months: e.target.value,
-                      hs_billing_start_delay_type:
-                        "hs_billing_start_delay_months",
-                      hs_recurring_billing_start_date: "",
-                      hs_billing_start_delay_days: "",
-                    });
-                  }}
-                />
-                <Button
-                  onClick={() => {
-                    setIsModalOpen({
-                      ...isModalOpen,
-                      "delayed start (months)": false,
-                    });
-                    // setStartBillingTerm("");
-                  }}
-                >
-                  Submit
-                </Button>
-              </DialogContent>
-            </Dialog>
-          </SelectItem>
-          <SelectItem value="delayed start (days)">
-            <Dialog
-              open={isModalOpen["delayed start (days)"]}
-              onOpenChange={(e) =>
-                setIsModalOpen({
-                  ...isModalOpen,
-                  "delayed start (days)": e,
-                })
-              }
-            >
-              <DialogTrigger>Delayed Start (days)</DialogTrigger>
-              <DialogContent>
-                <Input
-                  type="text"
-                  placeholder="Enter number of days"
-                  value={inputData.hs_billing_start_delay_days}
-                  onChange={(e) => {
-                    setInputData({
-                      ...inputData,
-                      hs_billing_start_delay_days: e.target.value,
-                      hs_billing_start_delay_type:
-                        "hs_billing_start_delay_days",
-                      hs_recurring_billing_start_date: "",
-                      hs_billing_start_delay_months: "",
-                    });
-                  }}
-                />
-                <Button
-                  onClick={() => {
-                    setIsModalOpen({
-                      ...isModalOpen,
-                      "delayed start (days)": false,
-                    });
-                    // setStartBillingTerm("");
-                  }}
-                >
-                  Submit
-                </Button>
-              </DialogContent>
-            </Dialog>
-          </SelectItem>
-          <SelectItem value="at payment">At Payment</SelectItem>
-        </SelectContent>
-      </Select>
+    <div className="flex flex-col gap-2">
+      <Label htmlFor="startBillingDate">Billing Start Date</Label>
+      <div className="relative">
+        <Button
+          className="relative w-[200px] z-10 py-0"
+          onClick={() => {
+            setIsSelectOpen(true);
+          }}
+          variant={"outline"}
+          id="startBillingDate"
+        >
+          {inputData.hs_billing_start_delay_days ? (
+            <p>{`${inputData.hs_billing_start_delay_days} days after payment`}</p>
+          ) : inputData.hs_billing_start_delay_months ? (
+            <p>{`${inputData.hs_billing_start_delay_months} months after payment`}</p>
+          ) : (
+            <p>{inputData.hs_recurring_billing_start_date}</p>
+          )}
+        </Button>
+        <Select
+          value={startBillingTerm}
+          onValueChange={(e) => {
+            handleChange(e);
+          }}
+          open={isSelectOpen}
+          onOpenChange={setIsSelectOpen}
+        >
+          <SelectTrigger className="absolute top-0 left-0 -z-2 w-full">
+            <SelectValue placeholder="Billing Start Date" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="custom date">
+              <Dialog
+                open={isModalOpen["custom date"]}
+                onOpenChange={(e) =>
+                  setIsModalOpen({ ...isModalOpen, "custom date": e })
+                }
+              >
+                <DialogTrigger>Custom Date</DialogTrigger>
+                <DialogContent>
+                  <Input
+                    type="date"
+                    value={inputData.hs_recurring_billing_start_date}
+                    onChange={(e) => {
+                      setInputData({
+                        ...inputData,
+                        hs_recurring_billing_start_date: e.target.value,
+                        hs_billing_start_delay_type: "",
+                        hs_billing_start_delay_days: "",
+                        hs_billing_start_delay_months: "",
+                      });
+                    }}
+                  />
+                  <Button
+                    onClick={() => {
+                      setIsModalOpen({
+                        ...isModalOpen,
+                        "custom date": false,
+                      });
+                      // setStartBillingTerm("");
+                    }}
+                    disabled={!inputData.hs_recurring_billing_start_date}
+                  >
+                    Submit
+                  </Button>
+                </DialogContent>
+              </Dialog>
+            </SelectItem>
+            <SelectItem value="delayed start (months)">
+              <Dialog
+                open={isModalOpen["delayed start (months)"]}
+                onOpenChange={(e) =>
+                  setIsModalOpen({
+                    ...isModalOpen,
+                    "delayed start (months)": e,
+                  })
+                }
+              >
+                <DialogTrigger>Delayed Start (months)</DialogTrigger>
+                <DialogContent>
+                  <Input
+                    type="text"
+                    placeholder="Enter number of months"
+                    value={inputData.hs_billing_start_delay_months}
+                    onChange={(e) => {
+                      setInputData({
+                        ...inputData,
+                        hs_billing_start_delay_months: e.target.value,
+                        hs_billing_start_delay_type:
+                          "hs_billing_start_delay_months",
+                        hs_recurring_billing_start_date: "",
+                        hs_billing_start_delay_days: "",
+                      });
+                    }}
+                  />
+                  <Button
+                    onClick={() => {
+                      setIsModalOpen({
+                        ...isModalOpen,
+                        "delayed start (months)": false,
+                      });
+                      // setStartBillingTerm("");
+                    }}
+                    disabled={!inputData.hs_billing_start_delay_months}
+                  >
+                    Submit
+                  </Button>
+                </DialogContent>
+              </Dialog>
+            </SelectItem>
+            <SelectItem value="delayed start (days)">
+              <Dialog
+                open={isModalOpen["delayed start (days)"]}
+                onOpenChange={(e) =>
+                  setIsModalOpen({
+                    ...isModalOpen,
+                    "delayed start (days)": e,
+                  })
+                }
+              >
+                <DialogTrigger>Delayed Start (days)</DialogTrigger>
+                <DialogContent>
+                  <Input
+                    type="text"
+                    placeholder="Enter number of days"
+                    value={inputData.hs_billing_start_delay_days}
+                    onChange={(e) => {
+                      setInputData({
+                        ...inputData,
+                        hs_billing_start_delay_days: e.target.value,
+                        hs_billing_start_delay_type:
+                          "hs_billing_start_delay_days",
+                        hs_recurring_billing_start_date: "",
+                        hs_billing_start_delay_months: "",
+                      });
+                    }}
+                  />
+                  <Button
+                    onClick={() => {
+                      setIsModalOpen({
+                        ...isModalOpen,
+                        "delayed start (days)": false,
+                      });
+                      // setStartBillingTerm("");
+                    }}
+                    disabled={!inputData.hs_billing_start_delay_days}
+                  >
+                    Submit
+                  </Button>
+                </DialogContent>
+              </Dialog>
+            </SelectItem>
+            <SelectItem value="at payment">At Payment</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 };
