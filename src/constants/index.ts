@@ -1,3 +1,5 @@
+import { LineItem } from "@/lib/validation";
+
 export const CLIENT_ID = process.env.CLIENT_ID!;
 export const CLIENT_SECRET = process.env.CLIENT_SECRET!;
 export const AUTHORIZATION_URL = process.env.NEXT_PUBLIC_AUTHORIZATION_URL!;
@@ -49,5 +51,33 @@ export const BillingFrequency: {
   {
     value: "every five years",
     label: "Every 5 Years",
+  },
+];
+
+export interface SelectTypes {
+  hs_recurring_billing_start_date: string;
+  hs_billing_start_delay_months: string;
+  hs_billing_start_delay_days: string;
+}
+
+export const BillingStartDateSelect: {
+  value: keyof SelectTypes;
+  type: string;
+  label: string;
+}[] = [
+  {
+    value: "hs_recurring_billing_start_date",
+    type: "date",
+    label: "Custom Date",
+  },
+  {
+    value: "hs_billing_start_delay_months",
+    type: "text",
+    label: "Delayed Start (months)",
+  },
+  {
+    value: "hs_billing_start_delay_days",
+    type: "text",
+    label: "Delayed Start (days)",
   },
 ];

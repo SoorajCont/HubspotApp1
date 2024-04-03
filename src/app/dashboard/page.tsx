@@ -15,23 +15,26 @@ import { UserData } from "@/types";
 import axios from "axios";
 import Link from "next/link";
 
-const DashboardPage = async ({
-  searchParams: { dealId, portalId, userId },
-}: {
+interface DashboardPageProps {
   searchParams: {
     dealId: string;
     portalId: string;
     userId: string;
   };
-}) => {
-  const getCollections = await getCollectionList(`Account_${portalId}`);
+}
 
+const DashboardPage = async ({
+  searchParams: { dealId, portalId, userId },
+}: DashboardPageProps) => {
+  // Fetching Collections and Access Token
+  const getCollections = await getCollectionList(`Account_${portalId}`);
   const accessToken = await getAccessTokenWithPortalId(Number(portalId));
 
   if (!accessToken) {
     console.error("Not get access token");
   }
 
+  // Fetching User Data
   const getUserData: {
     data: UserData;
   } = await axios.get(`https://api.hubapi.com/settings/v3/users/${userId}`, {

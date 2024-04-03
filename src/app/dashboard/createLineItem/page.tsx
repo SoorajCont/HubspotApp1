@@ -1,28 +1,16 @@
 "use client";
 
 import { getCollectionData } from "@/actions/collections";
-import BillingStartDateCreate from "@/components/BillingStartDateCreate";
+import LineItemForm from "@/components/form/LineItemForm";
 import ReadOnlyTable from "@/components/ReadOnlyTable";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import { BillingFrequency } from "@/constants";
-import { cn, decodeSlug, getId, validateTerm } from "@/lib/utils";
-import { createLineItemSchema } from "@/lib/validation";
+import { decodeSlug, getId } from "@/lib/utils";
+import { LineItem } from "@/lib/validation";
 import { CollectionDataType } from "@/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import z from "zod";
 
 const CreateLineItem = ({
   searchParams: { collection, portalId, dealId, userId },
@@ -39,9 +27,7 @@ const CreateLineItem = ({
   >([]);
   const router = useRouter();
 
-  const [inputData, setInputData] = useState<
-    z.infer<typeof createLineItemSchema>
-  >({
+  const [inputData, setInputData] = useState<LineItem>({
     quantity: "",
     hs_product_id: getId(decodeSlug(collection)),
     recurringbillingfrequency: "",
@@ -53,7 +39,6 @@ const CreateLineItem = ({
     hs_billing_start_delay_type: "",
   });
 
-  const [isValid, setIsValid] = useState(true);
   const [loading, setLoading] = useState(false);
   const [filteredData, setFilteredData] = useState<CollectionDataType[]>([]);
 
@@ -114,98 +99,11 @@ const CreateLineItem = ({
   return (
     <div className=" max-w-7xl m-auto space-y-5">
       <ReadOnlyTable data={filteredData} />
-
-      <div className="flex gap-5 w-full">
-        <BillingStartDateCreate
-          inputData={inputData}
-          setInputData={setInputData}
-        />
-        {/* <Input
-          type="date"
-          value={inputData.hs_recurring_billing_start_date}
-          onChange={(e) =>
-            setInputData({
-              ...inputData,
-              hs_recurring_billing_start_date: e.target.value,
-            })
-          }
-        /> */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="quantity">Quantity</Label>
-          <Input
-            type="text"
-            placeholder="Quantity"
-            id="quantity"
-            onChange={(e) =>
-              setInputData({ ...inputData, quantity: e.target.value })
-            }
-            value={inputData.quantity}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="term">Term(Months)</Label>
-          <Input
-            type="text"
-            placeholder="Term(Months)"
-            id="term"
-            onChange={(e) => {
-              const newData = { ...inputData };
-              const result = validateTerm(
-                newData.recurringbillingfrequency,
-                parseInt(e.target.value)
-              );
-              setIsValid(result);
-              newData.hs_recurring_billing_period = e.target.value;
-              setInputData(newData);
-            }}
-            value={inputData.hs_recurring_billing_period}
-            className={cn(isValid ? "border-input" : "border-red-500")}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="billingFrequency">Billing Frequency</Label>
-          <Select
-            value={inputData.recurringbillingfrequency}
-            onValueChange={(e) => {
-              const newData = { ...inputData };
-              const result = validateTerm(
-                e,
-                parseInt(newData.hs_recurring_billing_period)
-              );
-              setIsValid(result);
-              newData.recurringbillingfrequency = e;
-              setInputData(newData);
-            }}
-          >
-            <SelectTrigger id="billingFrequency" className="w-[200px]">
-              <SelectValue placeholder="Biling Frequency" />
-            </SelectTrigger>
-            <SelectContent className="h-44">
-              {BillingFrequency.map((frequency) => (
-                <SelectItem value={frequency.value} key={frequency.value}>
-                  {frequency.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="discount">Discount</Label>
-          <Input
-            type="text"
-            placeholder="Discount"
-            id="discount"
-            onChange={(e) =>
-              setInputData({
-                ...inputData,
-                hs_discount_percentage: e.target.value,
-              })
-            }
-            value={inputData.hs_discount_percentage}
-          />
-        </div>
-      </div>
+      <LineItemForm
+        inputData={inputData}
+        setInputData={setInputData}
+        action="Create"
+      />
       <Button onClick={handleSubmit} disabled={loading}>
         Submit
       </Button>
