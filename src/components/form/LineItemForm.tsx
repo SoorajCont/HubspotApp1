@@ -23,7 +23,7 @@ interface Props {
 const LineItemForm = ({ inputData, setInputData, action }: Props) => {
   const [isValid, setIsValid] = useState(true);
   return (
-    <div className="flex gap-5 w-full">
+    <div className="grid grid-cols-3 gap-5 w-full">
       <BillingStartDate inputData={inputData} setInputData={setInputData} />
       {action === "Edit" && (
         <div className="flex flex-col gap-2">
@@ -89,7 +89,7 @@ const LineItemForm = ({ inputData, setInputData, action }: Props) => {
             setInputData(newData);
           }}
         >
-          <SelectTrigger id="billingFrequency" className="w-[200px]">
+          <SelectTrigger id="billingFrequency" className="w-full">
             <SelectValue placeholder="Biling Frequency" />
           </SelectTrigger>
           <SelectContent className="h-44">
