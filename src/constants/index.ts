@@ -81,3 +81,40 @@ export const BillingStartDateSelect: {
     label: "Delayed Start (days)",
   },
 ];
+
+export const Benefits: { title: string; description: string }[] = [
+  {
+    title: "Ensures Consistency",
+    description:
+      "Standardizes discount rates across the sales team, eliminating errors and inconsistencies.",
+  },
+  {
+    title: "Improved Efficiency",
+    description:
+      "Automates discount application, saving sales reps time and minimizing manual calculations.",
+  },
+  {
+    title: "Centralized Management",
+    description:
+      "Provides a central location to manage and update discount rates for easy access and control by authorized personnel.",
+  },
+];
+
+export const TechnicalConsiderations: { title: string; description: string }[] =
+  [
+    {
+      title: "CRM Card",
+      description:
+        "The app should leverage the HubSpot CRM Card to create the discount rate table. A CRM Card is also used to show the line items which are created by the authorized personnel.  With the Help of a CRM Card you can also delete and edit ine items.",
+    },
+    {
+      title: "Webhooks",
+      description:
+        "Webhooks in HubSpot called when user create and delete the products and this webhook also connect with our database which help to create collection of product with notation {product name}_{product id}",
+    },
+    {
+      title: "UI According to Role (Admin or Normal User)",
+      description:
+        "Consider implementing user interface (UI) elements within the HubSpot CRM deal creation or editing process to reflect the applied discount rate (read-only for most users).",
+    },
+  ];

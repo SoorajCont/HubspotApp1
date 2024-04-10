@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Merriweather } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-const inter = Inter({ subsets: ["latin"] });
+import { cn } from "@/lib/utils";
+
+const merriweather = Merriweather({
+  subsets: ["latin"],
+  weight: ["400", "700", "300"],
+  variable: "--font-merriweather",
+});
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(merriweather.variable, montserrat.variable)}>
         {children}
         <Toaster />
       </body>
