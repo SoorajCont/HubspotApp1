@@ -1,4 +1,5 @@
 import { getAccessTokenWithRefreshToken } from "@/actions/authToken";
+import { createMongoConnection } from "@/actions/dbConnetion";
 import {
   createDatabase,
   exchangeAuthorizationCodeForTokens,
@@ -6,6 +7,7 @@ import {
   getProducts,
   saveRefreshTokenToMongo,
 } from "@/actions/install";
+import { createProductCollection } from "@/actions/webhook";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -26,12 +28,19 @@ export const GET = async (req: NextRequest) => {
       }
 
       const products = await getProducts(accessToken)
-      console.log(products)
+     
+      
+
       // Use the access token to make requests to the HubSpot API
       const accountInfo = await getAccountInfo(accessToken);
 
       // Extract organization name and ID from the accountInfo
       const portalId = accountInfo.portalId;
+
+      const dbClient =await createMongoConnection()
+      products?.map(async (item) => (
+        await dbClient?.db(`Account_${portalId}`).createCollection(`${item.name}_${item.hs_object_id}`)
+      ))
 
       await saveRefreshTokenToMongo(refreshToken, portalId);
       await createDatabase(portalId);

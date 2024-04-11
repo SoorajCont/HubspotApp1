@@ -2,8 +2,9 @@
 
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } from "@/constants";
 import { createMongoConnection } from "./dbConnetion";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Db, MongoClient } from "mongodb";
+import { LineItemsProperties } from "@/types";
 
 export async function createDatabase(portalId: number) {
   const dbName = `Account_${portalId}`;
@@ -96,14 +97,27 @@ export async function getAccountInfo(accessToken: string) {
   }
 }
 
-export const getProducts = (accessToken:string) => {
+export const getProducts =async (accessToken:string) => {
   try {
-    const products = axios.get("https://api.hubapi.com/crm/v3/objects/products", {
+    const products:{
+      data: {
+        results: [
+          {properties: LineItemsProperties}
+        ]
+      }
+    } =await axios.get("https://api.hubapi.com/crm/v3/objects/products", {
       headers: {
         "Authorization": `Bearer ${accessToken}`
       }
     })
-    return products
+    return products.data.results.map((item) => {
+      return(
+        {
+          name: item.properties.name,
+          hs_object_id: item.properties.hs_object_id
+        }
+      )
+    })
   } catch (error) {
     console.error({error})
   }

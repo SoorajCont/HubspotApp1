@@ -41,6 +41,7 @@ export interface LineItemsProperties extends WithId<Document> {
   name: string;
   quantity: string;
   hs_product_id: string;
+  hs_object_id: string
   recurringbillingfrequency: string;
   hs_recurring_billing_period: string;
   hs_discount_percentage: string;
