@@ -3,6 +3,7 @@ import {
   createDatabase,
   exchangeAuthorizationCodeForTokens,
   getAccountInfo,
+  getProducts,
   saveRefreshTokenToMongo,
 } from "@/actions/install";
 import { NextRequest, NextResponse } from "next/server";
@@ -16,12 +17,16 @@ export const GET = async (req: NextRequest) => {
       const tokens = await exchangeAuthorizationCodeForTokens(
         authorizationCode
       );
+      
       const refreshToken = tokens.refresh_token;
       const accessToken = await getAccessTokenWithRefreshToken(refreshToken);
 
       if (!accessToken) {
         throw new Error("Not get access token");
       }
+
+      const products = await getProducts(accessToken)
+      console.log(products)
       // Use the access token to make requests to the HubSpot API
       const accountInfo = await getAccountInfo(accessToken);
 

@@ -95,3 +95,16 @@ export async function getAccountInfo(accessToken: string) {
     });
   }
 }
+
+export const getProducts = (accessToken:string) => {
+  try {
+    const products = axios.get("https://api.hubapi.com/crm/v3/objects/products", {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+    return products
+  } catch (error) {
+    console.error({error})
+  }
+}
