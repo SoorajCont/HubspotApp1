@@ -29,10 +29,13 @@ const DashboardPage = async ({
   // Fetching Collections and Access Token
   const getCollections = await getCollectionList(`Account_${portalId}`);
   const accessToken = await getAccessTokenWithPortalId(Number(portalId));
+  console.log(accessToken)
 
   if (!accessToken) {
     console.error("Not get access token");
   }
+
+
 
   // Fetching User Data
   const getUserData: {

@@ -2,7 +2,7 @@
 
 import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } from "@/constants";
 import { createMongoConnection } from "./dbConnetion";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { Db, MongoClient } from "mongodb";
 import { LineItemsProperties } from "@/types";
 
@@ -110,6 +110,8 @@ export const getProducts =async (accessToken:string) => {
         "Authorization": `Bearer ${accessToken}`
       }
     })
+
+    console.log(products)
     return products.data.results.map((item) => {
       return(
         {

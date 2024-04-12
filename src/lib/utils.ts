@@ -138,3 +138,15 @@ export function removeFirstAndLastLetter(str: string): string {
   }
   return str.slice(1, -1);
 }
+
+export function storeAndExpire<T>(data: T, timeoutMinutes: number): T | null {
+  let storedData: T | null = data;
+
+  const clearData = () => {
+    storedData = null;
+  };
+
+  const timer = setTimeout(clearData, timeoutMinutes * 60 * 1000); // Timeout in milliseconds
+
+  return storedData;
+}
