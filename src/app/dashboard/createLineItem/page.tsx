@@ -4,7 +4,7 @@ import { getCollectionData } from "@/actions/collections";
 import LineItemForm from "@/components/form/LineItemForm";
 import ReadOnlyTable from "@/components/ReadOnlyTable";
 import { Button } from "@/components/ui/button";
-import { decodeSlug, getId } from "@/lib/utils";
+import { decodeSlug, getId, removeId } from "@/lib/utils";
 import { LineItem } from "@/lib/validation";
 import { CollectionDataType } from "@/types";
 import axios from "axios";
@@ -97,16 +97,23 @@ const CreateLineItem = ({
   };
 
   return (
-    <div className=" max-w-7xl m-auto space-y-5">
-      <ReadOnlyTable data={filteredData} />
-      <LineItemForm
-        inputData={inputData}
-        setInputData={setInputData}
-        action="Create"
-      />
-      <Button onClick={handleSubmit} disabled={loading}>
-        Submit
-      </Button>
+    <div className=" max-w-7xl m-auto space-y-4">
+      <div>
+        <h1 className="text-3xl mt-6 font-bold text-primary underline ">
+          {removeId(decodeSlug(collection))}
+        </h1>
+      </div>
+      <div className="space-y-5">
+        <ReadOnlyTable data={filteredData} />
+        <LineItemForm
+          inputData={inputData}
+          setInputData={setInputData}
+          action="Create"
+        />
+        <Button onClick={handleSubmit} disabled={loading}>
+          Submit
+        </Button>
+      </div>
     </div>
   );
 };

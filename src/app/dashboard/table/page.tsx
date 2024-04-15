@@ -1,5 +1,6 @@
 import { getCollectionData } from "@/actions/collections";
 import DataTable from "@/components/DataTable";
+import { decodeSlug, removeId } from "@/lib/utils";
 import { CollectionDataType } from "@/types";
 import React from "react";
 
@@ -20,14 +21,19 @@ const TablePage = async ({
   )) as CollectionDataType[];
 
   return (
-    collectionData && (
-      <DataTable
-        data={collectionData}
-        portalId={portalId}
-        collection={collection}
-        userId={userId}
-      />
-    )
+    <div className="max-w-7xl m-auto space-y-8 ">
+      <h1 className="p-10 text-3xl font-bold text-primary underline ">
+        {removeId(decodeSlug(collection))}
+      </h1>
+      {collectionData && (
+        <DataTable
+          data={collectionData}
+          portalId={portalId}
+          collection={collection}
+          userId={userId}
+        />
+      )}
+    </div>
   );
 };
 

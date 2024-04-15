@@ -8,13 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getDateFromObject } from "@/lib/utils";
 import { CollectionDataType } from "@/types";
 
 const ReadOnlyTable = ({ data }: { data: CollectionDataType[] }) => {
   return (
-    <div className="min-h-96">
-      <Table className="max-w-7xl mx-auto mt-10  ">
+    <div className="min-h-80">
+      <Table className="max-w-7xl mx-auto   ">
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Term(Months)</TableHead>

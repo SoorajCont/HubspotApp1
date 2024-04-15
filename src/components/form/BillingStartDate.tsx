@@ -85,7 +85,7 @@ const BillingStartDate = ({ inputData, setInputData }: Props) => {
       <Label htmlFor="startBillingDate">Billing Start Date</Label>
       <div className="relative">
         <Button
-          className="relative w-full z-10 py-0"
+          className="relative w-full justify-start z-10 py-0 px-3 font-normal "
           onClick={() => {
             setIsSelectOpen(true);
           }}

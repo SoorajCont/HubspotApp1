@@ -137,7 +137,7 @@ const DataTable = ({ data, collection, portalId, userId }: DataTableProps) => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen grid place-content-center gap-5">
+    <div className="w-full  grid place-content-center gap-5">
       <Button variant={"default"} className="w-fit " onClick={addNewRow}>
         Add New Row
       </Button>

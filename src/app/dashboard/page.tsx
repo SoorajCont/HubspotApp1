@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { decodeSlug, removeId } from "@/lib/utils";
+import { decodeSlug, generateSlug, removeId } from "@/lib/utils";
 import { UserData } from "@/types";
 import axios from "axios";
 import Link from "next/link";
@@ -29,13 +29,10 @@ const DashboardPage = async ({
   // Fetching Collections and Access Token
   const getCollections = await getCollectionList(`Account_${portalId}`);
   const accessToken = await getAccessTokenWithPortalId(Number(portalId));
-  console.log(accessToken)
 
   if (!accessToken) {
     console.error("Not get access token");
   }
-
-
 
   // Fetching User Data
   const getUserData: {
@@ -70,7 +67,9 @@ const DashboardPage = async ({
                   <>
                     <Button asChild variant={"outline"}>
                       <Link
-                        href={`/dashboard/table?collection=${collection.name}&portalId=${portalId}&userId=${userId}`}
+                        href={`/dashboard/table?collection=${generateSlug(
+                          collection.name
+                        )}&portalId=${portalId}&userId=${userId}`}
                       >
                         Update Table
                       </Link>
@@ -84,7 +83,9 @@ const DashboardPage = async ({
 
                 <Button asChild variant={"outline"}>
                   <Link
-                    href={`/dashboard/createLineItem?portalId=${portalId}&dealId=${dealId}&collection=${collection.name}&userId=${userId}`}
+                    href={`/dashboard/createLineItem?portalId=${portalId}&dealId=${dealId}&collection=${generateSlug(
+                      collection.name
+                    )}&userId=${userId}`}
                   >
                     Create Line Item
                   </Link>
