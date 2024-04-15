@@ -29,7 +29,7 @@ export async function createProductCollection(
   portalId: number
 ) {
   try {
-    const accessToken: string | undefined = await getAccessTokenWithPortalId(
+    const accessToken: string | null = await getAccessTokenWithPortalId(
       portalId
     );
 
