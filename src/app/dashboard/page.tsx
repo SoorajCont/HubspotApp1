@@ -26,12 +26,20 @@ interface DashboardPageProps {
 const DashboardPage = async ({
   searchParams: { dealId, portalId, userId },
 }: DashboardPageProps) => {
+  if (!dealId || !portalId || !userId) {
+    throw new Error("Portal Id, User Id and Deal Id are required");
+  }
+
   // Fetching Collections and Access Token
   const getCollections = await getCollectionList(`Account_${portalId}`);
   const accessToken = await getAccessTokenWithPortalId(Number(portalId));
 
   if (!accessToken) {
-    console.error("Not get access token");
+    throw new Error("Access Token Not Generated");
+  }
+
+  if (!getCollections) {
+    throw new Error("Collection List Not Found");
   }
 
   // Fetching User Data
@@ -42,10 +50,6 @@ const DashboardPage = async ({
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-  if (!getCollections) {
-    return null;
-  }
 
   return (
     <div className="w-full min-h-screen grid place-content-center">

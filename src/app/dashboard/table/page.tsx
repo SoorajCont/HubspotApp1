@@ -20,6 +20,10 @@ const TablePage = async ({
     collection
   )) as CollectionDataType[];
 
+  if (!collectionData) {
+    throw new Error("Collection Data Not Found");
+  }
+
   return (
     <div className="max-w-7xl m-auto space-y-8 ">
       <h1 className="p-10 text-3xl font-bold text-primary underline ">

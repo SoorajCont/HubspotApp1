@@ -42,7 +42,7 @@ const EditPage = ({
       const accessToken = await getAccessTokenWithPortalId(Number(portalId));
       const list = await getLineItemList(accessToken!, Number(dealId));
       const data = await getLineItemRecords(list!, accessToken!);
-      console.log(data);
+
       const response = data!.filter((item) => item.id == lineItemId)[0]
         .properties;
       // console.log(response);
