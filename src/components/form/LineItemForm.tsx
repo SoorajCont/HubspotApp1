@@ -36,6 +36,7 @@ const LineItemForm = ({ inputData, setInputData, action }: Props) => {
             onChange={(e) =>
               setInputData({ ...inputData, name: e.target.value })
             }
+            required
             value={inputData.name}
           />
         </div>
@@ -47,6 +48,7 @@ const LineItemForm = ({ inputData, setInputData, action }: Props) => {
           type="text"
           placeholder="Quantity"
           id="quantity"
+          required
           onChange={(e) =>
             setInputData({ ...inputData, quantity: e.target.value })
           }
@@ -59,6 +61,7 @@ const LineItemForm = ({ inputData, setInputData, action }: Props) => {
           type="text"
           placeholder="Term(Months)"
           id="term"
+          required
           onChange={(e) => {
             const newData = { ...inputData };
             const result = validateTerm(
@@ -88,6 +91,7 @@ const LineItemForm = ({ inputData, setInputData, action }: Props) => {
             newData.recurringbillingfrequency = e;
             setInputData(newData);
           }}
+          required
         >
           <SelectTrigger id="billingFrequency" className="w-full">
             <SelectValue placeholder="Biling Frequency" />
@@ -107,6 +111,7 @@ const LineItemForm = ({ inputData, setInputData, action }: Props) => {
           type="text"
           placeholder="Discount"
           id="discount"
+          required
           onChange={(e) =>
             setInputData({
               ...inputData,

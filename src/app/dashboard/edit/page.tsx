@@ -45,7 +45,7 @@ const EditPage = ({
 
       const response = data!.filter((item) => item.id == lineItemId)[0]
         .properties;
-      // console.log(response);
+      console.log(response);
 
       if (!response) {
         throw new Error("List Item not found");
