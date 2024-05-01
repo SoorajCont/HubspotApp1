@@ -30,6 +30,7 @@ const CreateLineItem = ({
   const [inputData, setInputData] = useState<LineItem>({
     quantity: "",
     hs_product_id: getId(decodeSlug(collection)),
+    name: "",
     recurringbillingfrequency: "",
     hs_recurring_billing_period: "",
     hs_recurring_billing_start_date: "At Payment",
@@ -108,7 +109,7 @@ const CreateLineItem = ({
         <LineItemForm
           inputData={inputData}
           setInputData={setInputData}
-          action="Create"
+          // action="Create"
         />
         <Button onClick={handleSubmit} disabled={loading}>
           Submit

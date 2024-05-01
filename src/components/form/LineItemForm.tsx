@@ -17,30 +17,28 @@ import { Label } from "@/components/ui/label";
 interface Props {
   inputData: LineItem;
   setInputData: Dispatch<SetStateAction<LineItem>>;
-  action: "Create" | "Edit";
+  // action: "Create" | "Edit";
 }
 
-const LineItemForm = ({ inputData, setInputData, action }: Props) => {
+const LineItemForm = ({ inputData, setInputData }: Props) => {
   const [isValid, setIsValid] = useState(true);
   return (
     <div className="grid grid-cols-3 gap-5 w-full">
       <BillingStartDate inputData={inputData} setInputData={setInputData} />
-      {action === "Edit" && (
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="name">Name</Label>
+      {/* {action === "Edit" && ( */}
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="name">Name</Label>
 
-          <Input
-            type="text"
-            placeholder="Name"
-            id="name"
-            onChange={(e) =>
-              setInputData({ ...inputData, name: e.target.value })
-            }
-            required
-            value={inputData.name}
-          />
-        </div>
-      )}
+        <Input
+          type="text"
+          placeholder="Name"
+          id="name"
+          onChange={(e) => setInputData({ ...inputData, name: e.target.value })}
+          required
+          value={inputData.name}
+        />
+      </div>
+      {/* )} */}
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="quantity">Quantity</Label>

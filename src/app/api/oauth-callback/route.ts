@@ -7,6 +7,7 @@ import {
   getProducts,
   saveRefreshTokenToMongo,
 } from "@/actions/install";
+import { generateSlug } from "@/lib/utils";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,7 +20,7 @@ export const GET = async (req: NextRequest) => {
       const tokens = await exchangeAuthorizationCodeForTokens(
         authorizationCode
       );
-      
+
       const refreshToken = tokens.refresh_token;
       const accessToken = await getAccessTokenWithRefreshToken(refreshToken);
 
@@ -27,7 +28,7 @@ export const GET = async (req: NextRequest) => {
         throw new Error("Not get access token");
       }
 
-      const products = await getProducts(accessToken)
+      const products = await getProducts(accessToken);
 
       // Use the access token to make requests to the HubSpot API
       const accountInfo = await getAccountInfo(accessToken);
@@ -36,10 +37,15 @@ export const GET = async (req: NextRequest) => {
       const portalId = accountInfo.portalId;
 
       // console.log(products)
-      const dbClient =await createMongoConnection()
-      products?.map(async (item) => (
-        await dbClient?.db(`Account_${portalId}`).createCollection(`${item.name}_${item.hs_object_id}`)
-      ))
+      const dbClient = await createMongoConnection();
+      products?.map(
+        async (item) =>
+          await dbClient
+            ?.db(`Account_${portalId}`)
+            .createCollection(
+              `${generateSlug(item.name!)}_${item.hs_object_id}`
+            )
+      );
 
       await saveRefreshTokenToMongo(refreshToken, portalId);
       await createDatabase(portalId);

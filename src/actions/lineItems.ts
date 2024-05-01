@@ -2,7 +2,7 @@
 
 import { LineItemsObject, LineItemsResponse } from "@/types";
 import z from "zod";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { createLineItemSchema, editLineItemSchema } from "@/lib/validation";
 
 export async function getLineItemList(accessToken: string, dealId: number) {
