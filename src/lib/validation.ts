@@ -2,6 +2,7 @@ import z from "zod";
 
 export const createLineItemSchema = z.object({
   quantity: z.string(),
+  name: z.string().optional(),
   hs_product_id: z.string(),
   recurringbillingfrequency: z.string(),
   hs_recurring_billing_period: z.string(),
